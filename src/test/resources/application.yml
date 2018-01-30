@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/develop
+    username: kliangh
+    password: kliangh
+    continueOnError: true
+    initialize: true
+
+  jpa:
+      show-sql: false
+      database-platform: org.hibernate.dialect.MySQLDialect
+      hibernate:
+          ddl-auto: none
+      database: mysql

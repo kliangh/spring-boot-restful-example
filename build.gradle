@@ -1,0 +1,37 @@
+group 'code.kliangh'
+
+apply plugin: "java"
+apply plugin: "jacoco"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compileOnly "org.projectlombok:lombok:1.16.12"
+
+	compile "org.springframework.boot:spring-boot-starter-data-jpa:1.5.6.RELEASE"
+	compile "org.springframework.boot:spring-boot-starter-web:1.5.6.RELEASE"
+	compile "org.springframework.boot:spring-boot-starter-actuator:1.5.6.RELEASE"
+	compile "mysql:mysql-connector-java:5.1.6"
+	compile "com.googlecode.log4jdbc:log4jdbc:1.2"
+
+	compile "commons-beanutils:commons-beanutils:1.9.3"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.9.0"
+
+	testCompile "org.springframework.boot:spring-boot-starter-test:1.5.6.RELEASE"
+	testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0"
+	testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
+}
+
+check.dependsOn jacocoTestReport

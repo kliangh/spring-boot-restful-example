@@ -1,0 +1,28 @@
+spring:
+    datasource:
+        driverClassName: net.sf.log4jdbc.DriverSpy
+        url: jdbc:log4jdbc:mysql://localhost:3306/develop
+        username: kliangh
+        password: kliangh
+        continueOnError: true
+        initialize: true
+
+    jpa:
+        show-sql: false
+        database-platform: org.hibernate.dialect.MySQLDialect
+        database: mysql
+        hibernate:
+            dialect:
+            hbm2ddl:
+            auto: none
+
+info:
+    build:
+        artifact: code-kliangh
+        name: spring-boot-restful-example
+        description: dev-env
+        version: 0.0.1
+
+management:
+    security:
+        enabled: false
