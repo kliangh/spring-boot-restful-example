@@ -1,9 +1,6 @@
-projectPath:
-  javaSourcePath: "src/main/java/code/kliangh"
-
 codecov:
   coverage:
     ignore:
-      - ${projectPath.javaSourcePath}/Application.java
+      - "./src/main/java/code/kliangh/Application.java"
       - ${projectPath.javaSourcePath}/document/SwaggerConfig.java
       - ${projectPath.javaSourcePath}/system/SystemInfo.java
