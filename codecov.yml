@@ -1,6 +1,0 @@
-codecov:
-  coverage:
-    ignore:
-      - "src/main/java/code/kliangh/*Application.java"
-      - "src/main/java/code/kliangh/*Config.java"
-      - "src/main/java/code/kliangh/*Info.java"
