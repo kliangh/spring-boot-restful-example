@@ -1,0 +1,6 @@
+codecov:
+  coverage:
+    ignore:
+      - "Application.java"
+      - "document/SwaggerConfig.java"
+      - "system/SystemInfo.java"

@@ -1,4 +1,4 @@
-package code.kliangh.Document;
+package code.kliangh.document;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
