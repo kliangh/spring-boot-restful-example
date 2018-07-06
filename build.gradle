@@ -47,7 +47,7 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					'**/*Application**',
                     '**/*SystemInfo**',
-					'**/*SwaggerConfig**'
+					'**/*Config**'
 			])
 		})
 	}
