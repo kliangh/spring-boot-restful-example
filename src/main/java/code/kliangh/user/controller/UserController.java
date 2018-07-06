@@ -20,32 +20,29 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     //Get all user from userRepository
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<User> findAllUser() {
-        List<User> users = userService.findAllUsers();
+        return userService.findAllUsers();
+    }
 
-        return users;
+    //Get an user by UID
+    @GetMapping("/{uid}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public User getUser(@PathVariable String uid) {
+        return userService.findUserByUid(uid);
     }
 
     //Add an user to userRepository
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addUser(@RequestBody User newUser) {
         userService.addUser(newUser);
     }
 
-    //Get an user by UID
-    @RequestMapping(method = RequestMethod.GET, value = "/{uid}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public User getUser(@PathVariable String uid) {
-        User user = userService.findUserByUid(uid);
-
-        return user;
-    }
 
     //Update specific field of an user, name or surname
-    @RequestMapping(method = RequestMethod.PUT, value = "/{uid}")
+    @PutMapping("/{uid}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateUser(@RequestBody User user) throws Exception {
 
@@ -53,7 +50,7 @@ public class UserController {
     }
 
     //Delete an user by UID
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{uid}")
+    @DeleteMapping("/{uid}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteUser(@PathVariable String uid) {
 

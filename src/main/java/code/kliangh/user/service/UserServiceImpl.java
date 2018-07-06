@@ -6,6 +6,7 @@ import code.kliangh.util.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-@Transactional
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger("UserServiceImpl.class");
 
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    @Cacheable("user")
     @Transactional(readOnly = true)
     public User findUserByUid(String uid) {
         return userRepository.findOne(uid);
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
         //Get original user entity
         User originalUser = userRepository.findOne(updatedUser.getUid());
 
-        //Copy properties with value from updated user to orignal user
+        //Copy properties with value from updated user to original user
         BeanUtils.copyPropertiesWithValue(updatedUser, originalUser);
 
         userRepository.saveAndFlush(originalUser);

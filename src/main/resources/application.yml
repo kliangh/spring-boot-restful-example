@@ -19,6 +19,10 @@ spring:
       hbm2ddl:
       auto: none
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
 info:
   build:
     artifact: code-kliangh

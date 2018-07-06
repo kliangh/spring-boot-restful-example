@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 2019590492905741320L;
 
     @Id
     @Column(name = "uid", nullable = false)
