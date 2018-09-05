@@ -6,6 +6,8 @@ import code.kliangh.util.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +22,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger("UserServiceImpl.class");
 
+    private static final String CACHE_KEY = "user";
+
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    @Cacheable("user")
+    @Cacheable(value = CACHE_KEY, key = "#uid")
     @Transactional(readOnly = true)
     public User findUserByUid(String uid) {
         return userRepository.findOne(uid);
@@ -46,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CachePut(value = CACHE_KEY, key = "#updatedUser.uid")
     public void updateUser(User updatedUser) throws Exception {
         //Get original user entity
         User originalUser = userRepository.findOne(updatedUser.getUid());
@@ -57,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = CACHE_KEY, allEntries = true)
     public void deleteUserByUid(String uid) {
         userRepository.delete(uid);
         userRepository.flush();
