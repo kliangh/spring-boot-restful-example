@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,12 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = new PageRequest(0, 20);
 
         return userRepository.findAll(pageable).getContent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findUser(Example<User> userExample) {
+        return userRepository.findOne(userExample);
     }
 
     @Override

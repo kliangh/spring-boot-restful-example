@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -46,7 +47,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void findAllUser() throws Exception {
+    public void getAllUser() throws Exception {
         User testUser1 = new User();
         testUser1.setUid(UUID.randomUUID().toString());
         testUser1.setSurname("Kenyon");
@@ -70,7 +71,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void findUser() throws Exception {
+    public void getUser() throws Exception {
         User testUser = new User();
         String uid = UUID.randomUUID().toString();
         testUser.setUid(uid);
@@ -85,6 +86,27 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.surname", is("Hou")))
                 .andDo(print());
         verify(userService, times(1)).findUserByUid(uid);
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void getUserByExample() throws Exception {
+        User testUser = new User();
+        testUser.setName("Kenyon");
+
+        User expectedUser = new User();
+        expectedUser.setUid(UUID.randomUUID().toString());
+        expectedUser.setName("Kenyon");
+        expectedUser.setSurname("Hou");
+
+        when(userService.findUser(Example.of(testUser))).thenReturn(expectedUser);
+        mockMvc.perform(get("/users/example?name=Kenyon"))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$.name", is("Kenyon")))
+               .andExpect(jsonPath("$.surname", is("Hou")))
+               .andDo(print());
+        verify(userService, times(1)).findUser(Example.of(testUser));
         verifyNoMoreInteractions(userService);
     }
 

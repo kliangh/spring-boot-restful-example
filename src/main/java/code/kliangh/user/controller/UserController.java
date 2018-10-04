@@ -2,12 +2,15 @@ package code.kliangh.user.controller;
 
 import code.kliangh.user.entity.User;
 import code.kliangh.user.service.UserService;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +25,7 @@ public class UserController {
     //Get all user from userRepository
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<User> findAllUser() {
+    public List<User> getAllUser() {
         return userService.findAllUsers();
     }
 
@@ -33,6 +36,11 @@ public class UserController {
         return userService.findUserByUid(uid);
     }
 
+    @GetMapping("/example")
+    @ResponseStatus(value = HttpStatus.OK)
+    public User getUser(@Valid User user) {
+        return userService.findUser(Example.of(user));
+    }
     //Add an user to userRepository
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)

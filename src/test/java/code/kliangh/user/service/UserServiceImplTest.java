@@ -7,10 +7,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,6 +46,27 @@ public class UserServiceImplTest {
         assertEquals("Hou", resultUser.getSurname());
 
         verify(userRepository, times(1)).findOne(uid);
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
+    public void findUser() {
+        User testUser = new User();
+        testUser.setName("Kenyon");
+        Example<User> userExample = Example.of(testUser);
+
+        User expectedUser = new User();
+        expectedUser.setUid(UUID.randomUUID().toString());
+        expectedUser.setName("Kenyon");
+        expectedUser.setSurname("Hou");
+
+        when(userRepository.findOne(Example.of(testUser))).thenReturn(expectedUser);
+
+        User result = userServiceImpl.findUser(userExample);
+        assertEquals(result.getName(), testUser.getName());
+        assertEquals(result.getSurname(), "Hou");
+
+        verify(userRepository, times(1)).findOne(userExample);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -127,5 +145,4 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).flush();
         verifyNoMoreInteractions(userRepository);
     }
-
 }
