@@ -1,15 +1,16 @@
 package code.kliangh.system.performance;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.mock;
 
-class ComplexityEvaluatorTest {
+public class ComplexityEvaluatorTest {
 
     @Mock
     private ProceedingJoinPoint joinPoint;
@@ -17,19 +18,19 @@ class ComplexityEvaluatorTest {
     @InjectMocks
     private ComplexityEvaluator aspect;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         joinPoint = mock(ProceedingJoinPoint.class);
     }
 
     @Test
-    void evaluateTimeComplexity() throws Throwable {
+    public void evaluateTimeComplexity() throws Throwable {
         aspect.evaluateTimeComplexity(joinPoint);
     }
 
     @Test
-    void evaluateSpaceComplexity() throws Throwable {
+    public void evaluateSpaceComplexity() throws Throwable {
         aspect.evaluateSpaceComplexity(joinPoint);
     }
 }
