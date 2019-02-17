@@ -72,6 +72,7 @@ public class UserServiceImplTest {
 
     @Test
     public void findAllUsers() throws Exception {
+        Pageable pageable = new PageRequest(0, 20);
         User testUser1 = new User();
         testUser1.setUid(UUID.randomUUID().toString());
 
@@ -79,13 +80,11 @@ public class UserServiceImplTest {
         testUser2.setUid(UUID.randomUUID().toString());
 
         List<User> users = Arrays.asList(testUser1, testUser2);
-        Pageable pageable = new PageRequest(0, 20);
-
         Page<User> pageableUsers = new PageImpl<>(users);
 
         when(userRepository.findAll(pageable)).thenReturn(pageableUsers);
 
-        List<User> resultUser = userServiceImpl.findAllUsers();
+        List<User> resultUser = userServiceImpl.findAllUsers(pageable);
         assertEquals(2, resultUser.size());
 
         verify(userRepository, times(1)).findAll(pageable);

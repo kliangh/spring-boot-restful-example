@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,6 +45,7 @@ public class UserControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userController)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
 
         objectMapper = new ObjectMapper();
@@ -58,15 +63,18 @@ public class UserControllerTest {
 
         List<User> users = Arrays.asList(testUser1, testUser2);
 
-        when(userService.findAllUsers()).thenReturn(users);
-        mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].surname", is("Kenyon")))
-                .andExpect(jsonPath("$[1].surname", is("Hou")))
-                .andDo(print());
-        verify(userService, times(1)).findAllUsers();
+        when(userService.findAllUsers(isA(Pageable.class))).thenReturn(users);
+        mockMvc.perform(get("/users")
+                                .param("page", "0")
+                                .param("size", "10"))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(jsonPath("$", hasSize(2)))
+               .andExpect(jsonPath("$[0].surname", is("Kenyon")))
+               .andExpect(jsonPath("$[1].surname", is("Hou")))
+               .andDo(print());
+
+        verify(userService, times(1)).findAllUsers(isA(Pageable.class));
         verifyNoMoreInteractions(userService);
     }
 

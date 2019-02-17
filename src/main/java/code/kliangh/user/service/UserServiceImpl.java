@@ -37,9 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAllUsers() {
-        Pageable pageable = new PageRequest(0, 20);
-
+    public List<User> findAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).getContent();
     }
 

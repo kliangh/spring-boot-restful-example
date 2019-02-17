@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,8 @@ public class UserController {
     //Get all user from userRepository
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<User> getAllUser() {
-        return userService.findAllUsers();
+    public List<User> getAllUser(@PageableDefault Pageable pageable) {
+        return userService.findAllUsers(pageable);
     }
 
     //Get an user by UID
