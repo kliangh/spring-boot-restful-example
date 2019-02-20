@@ -2,7 +2,6 @@ package code.kliangh.user.controller;
 
 import code.kliangh.user.entity.User;
 import code.kliangh.user.service.UserService;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
