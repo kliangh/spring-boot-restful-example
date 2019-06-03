@@ -25,8 +25,12 @@ public class UserServiceImpl implements UserService {
 
     private static final String CACHE_KEY = "user";
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Cacheable(value = CACHE_KEY, key = "#uid")
