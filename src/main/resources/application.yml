@@ -4,7 +4,7 @@ spring:
 
   datasource:
     driverClassName: net.sf.log4jdbc.DriverSpy
-    url: jdbc:log4jdbc:mysql://localhost:3306/develop
+    url: jdbc:log4jdbc:postgresql://localhost:5432/develop
     username: kliangh
     password: kliangh
     continueOnError: true
@@ -12,8 +12,8 @@ spring:
 
   jpa:
     show-sql: false
-    database-platform: org.hibernate.dialect.MySQLDialect
-    database: mysql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
     hibernate:
       dialect:
       hbm2ddl:
