@@ -3,6 +3,7 @@ package code.kliangh.user.service;
 import code.kliangh.user.entity.User;
 import code.kliangh.user.repository.UserRepository;
 import code.kliangh.util.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    private static final Logger LOG = LoggerFactory.getLogger("UserServiceImpl.class");
 
     private static final String CACHE_KEY = "user";
 
