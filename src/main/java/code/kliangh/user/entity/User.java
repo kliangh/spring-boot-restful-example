@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "service_user")
 public class User implements Serializable {
     private static final long serialVersionUID = 2019590492905741320L;
 
