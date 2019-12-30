@@ -11,6 +11,7 @@ import org.springframework.data.domain.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -25,12 +26,12 @@ public class UserServiceImplTest {
     private UserServiceImpl userServiceImpl;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void findUserByUid() throws Exception {
+    public void findUserByUid() {
         User testUser = new User();
 
         String uid = UUID.randomUUID().toString();
@@ -38,14 +39,14 @@ public class UserServiceImplTest {
         testUser.setName("Kenyon");
         testUser.setSurname("Hou");
 
-        when(userRepository.findOne(uid)).thenReturn(testUser);
+        when(userRepository.findById(uid)).thenReturn(Optional.of(testUser));
 
         User resultUser = userServiceImpl.findUserByUid(uid);
         assertEquals(uid, resultUser.getUid());
         assertEquals("Kenyon", resultUser.getName());
         assertEquals("Hou", resultUser.getSurname());
 
-        verify(userRepository, times(1)).findOne(uid);
+        verify(userRepository, times(1)).findById(uid);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -60,7 +61,7 @@ public class UserServiceImplTest {
         expectedUser.setName("Kenyon");
         expectedUser.setSurname("Hou");
 
-        when(userRepository.findOne(Example.of(testUser))).thenReturn(expectedUser);
+        when(userRepository.findOne(Example.of(testUser))).thenReturn(Optional.of(expectedUser));
 
         User result = userServiceImpl.findUser(userExample);
         assertEquals(result.getName(), testUser.getName());
@@ -71,8 +72,8 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findAllUsers() throws Exception {
-        Pageable pageable = new PageRequest(0, 20);
+    public void findAllUsers() {
+        Pageable pageable = PageRequest.of(0, 20);
         User testUser1 = new User();
         testUser1.setUid(UUID.randomUUID().toString());
 
@@ -92,7 +93,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void addUser() throws Exception {
+    public void addUser() {
         User testUser = new User();
         testUser.setUid(UUID.randomUUID().toString());
         testUser.setName("Kenyon");
@@ -119,28 +120,28 @@ public class UserServiceImplTest {
         updatedUser.setName("Vargo");
 
         when(userRepository.save(originalUser)).thenReturn(originalUser);
-        when(userRepository.findOne(uid)).thenReturn(originalUser);
+        when(userRepository.findById(uid)).thenReturn(Optional.of(originalUser));
 
         userServiceImpl.updateUser(updatedUser);
 
         User resultUser = userServiceImpl.findUserByUid(uid);
         assertEquals("Vargo", resultUser.getName());
 
-        verify(userRepository, times(2)).findOne(originalUser.getUid());
+        verify(userRepository, times(2)).findById(originalUser.getUid());
         verify(userRepository, times(1)).saveAndFlush(originalUser);
         verifyNoMoreInteractions(userRepository);
     }
 
     @Test
-    public void deleteUserByUid() throws Exception {
+    public void deleteUserByUid() {
 
         String uid = UUID.randomUUID().toString();
 
-        doNothing().when(userRepository).delete(uid);
+        doNothing().when(userRepository).deleteById(uid);
 
         userServiceImpl.deleteUserByUid(uid);
 
-        verify(userRepository, times(1)).delete(uid);
+        verify(userRepository, times(1)).deleteById(uid);
         verify(userRepository, times(1)).flush();
         verifyNoMoreInteractions(userRepository);
     }

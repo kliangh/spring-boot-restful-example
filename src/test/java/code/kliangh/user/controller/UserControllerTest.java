@@ -9,8 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -68,7 +66,7 @@ public class UserControllerTest {
                                 .param("page", "0")
                                 .param("size", "10"))
                .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                .andExpect(jsonPath("$", hasSize(2)))
                .andExpect(jsonPath("$[0].surname", is("Kenyon")))
                .andExpect(jsonPath("$[1].surname", is("Hou")))
@@ -89,7 +87,7 @@ public class UserControllerTest {
         when(userService.findUserByUid(uid)).thenReturn(testUser);
         mockMvc.perform(get("/users/{uid}", uid))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.name", is("Kenyon")))
                 .andExpect(jsonPath("$.surname", is("Hou")))
                 .andDo(print());
@@ -110,7 +108,7 @@ public class UserControllerTest {
         when(userService.findUser(Example.of(testUser))).thenReturn(expectedUser);
         mockMvc.perform(get("/users/example?name=Kenyon"))
                .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                .andExpect(jsonPath("$.name", is("Kenyon")))
                .andExpect(jsonPath("$.surname", is("Hou")))
                .andDo(print());

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = CACHE_KEY, key = "#uid")
     @Transactional(readOnly = true)
     public User findUserByUid(String uid) {
-        return userRepository.findOne(uid);
+        return userRepository.findById(uid).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findUser(Example<User> userExample) {
-        return userRepository.findOne(userExample);
+        return userRepository.findOne(userExample).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @CachePut(value = CACHE_KEY, key = "#updatedUser.uid")
     public void updateUser(User updatedUser) throws Exception {
         //Get original user entity
-        User originalUser = userRepository.findOne(updatedUser.getUid());
+        User originalUser = findUserByUid(updatedUser.getUid());
 
         //Copy properties with value from updated user to original user
         BeanUtils.copyPropertiesWithValue(updatedUser, originalUser);
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @CacheEvict(value = CACHE_KEY, allEntries = true)
     public void deleteUserByUid(String uid) {
-        userRepository.delete(uid);
+        userRepository.deleteById(uid);
         userRepository.flush();
     }
 
