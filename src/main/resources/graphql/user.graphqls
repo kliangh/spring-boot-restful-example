@@ -1,10 +1,11 @@
 type User {
-    uid: String
-    name: String
-    surname: String
+    uid: ID!
+    name: String!
+    surname: String!
     remark: String
 }
 
 type Query {
     findAllUsers: [User]!
+    user(id: ID!) : User
 }

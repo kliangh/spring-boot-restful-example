@@ -7,23 +7,22 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class QueryTest {
+public class UserQueryTest {
 
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
-    private Query query;
+    private UserQuery userQuery;
 
     @Before
     public void setUp() {
@@ -34,11 +33,33 @@ public class QueryTest {
     public void findAllUsers() {
         when(userRepository.findAll()).thenReturn(getAllUsers());
 
-        List<User> result = query.findAllUsers();
+        List<User> result = userQuery.findAllUsers();
         assertEquals(2, result.size());
 
         verify(userRepository, times(1)).findAll();
         verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
+    public void user() {
+        User testUser = getTestUser();
+
+        when(userRepository.findById(testUser.getUid())).thenReturn(Optional.of(testUser));
+
+        User result = userQuery.user(testUser.getUid());
+        assertEquals(testUser.getName(), result.getName());
+        assertEquals(testUser.getSurname(), result.getSurname());
+
+        verify(userRepository, times(1)).findById(testUser.getUid());
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    private User getTestUser() {
+        User testUser = new User();
+        testUser.setUid(UUID.randomUUID().toString());
+        testUser.setName("Kenyon");
+        testUser.setSurname("Hou");
+        return testUser;
     }
 
     private List<User> getAllUsers() {
