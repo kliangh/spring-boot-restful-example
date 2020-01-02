@@ -36,6 +36,7 @@ management:
       enabled: true
     health:
       enabled: true
+      show-details: always
     info:
       enabled: true
   endpoints:

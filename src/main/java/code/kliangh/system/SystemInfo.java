@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class SystemInfo implements HealthIndicator {
     @Override
     public Health health() {
-
             return Health.up().build();
     }
 }
