@@ -5,12 +5,12 @@ This example use spring boot framework to build up an restful API server.
 
 After you start the service, you can access the following link to make sure the status of your service.
 
-[Check service info](http://localhost:8080/info)
+[Check service info](http://localhost:8080/actuator/info)
 
-[Showing application health information](http://localhost:8080/health)
+[Showing application health information](http://localhost:8080/actuator/health)
 
-[Return metrics of application](http://localhost:8080/metrics)
+[Return metrics of application](http://localhost:8080/actuator/metrics)
 
-[Showing latest few HTTP requests](http://localhost:8080/trace)
+[GraphQL testing UI](http://localhost:8080/graphiql)
 
 [Swagger](http://localhost:8080/swagger-ui.html)
