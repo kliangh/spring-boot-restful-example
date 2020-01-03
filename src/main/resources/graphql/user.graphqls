@@ -9,3 +9,9 @@ type Query {
     findAllUsers: [User]!
     user(id: ID!) : User
 }
+
+type Mutation {
+    addUser(name: String!, surname: String!, remark: String): User
+    updateUser(uid: ID!, name: String, surname: String, remark: String): User
+    deleteUser(uid: ID!): Boolean!
+}
