@@ -99,10 +99,11 @@ public class UserServiceImplTest {
         testUser.setName("Kenyon");
         testUser.setSurname("Hou");
 
-        when(userRepository.save(testUser)).thenReturn(testUser);
+        when(userRepository.save(any())).thenReturn(testUser);
 
-        userServiceImpl.addUser(testUser);
+        User resultUser = userServiceImpl.addUser(testUser);
 
+        assertEquals(testUser, resultUser);
         verify(userRepository, times(1)).save(testUser);
         verifyNoMoreInteractions(userRepository);
     }

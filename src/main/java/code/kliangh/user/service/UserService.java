@@ -14,7 +14,7 @@ public interface UserService {
 
     User findUserByUid(String uid);
 
-    void addUser(User newUser);
+    User addUser(User newUser);
 
     void updateUser(User user) throws Exception;
 

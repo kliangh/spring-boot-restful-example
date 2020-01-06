@@ -54,10 +54,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User newUser) {
+    public User addUser(User newUser) {
         newUser.setUid(UUID.randomUUID().toString());
 
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
     @Override

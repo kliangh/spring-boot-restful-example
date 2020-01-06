@@ -119,14 +119,15 @@ public class UserControllerTest {
     @Test
     public void addUser() throws Exception {
         User testUser = new User();
+        testUser.setUid(UUID.randomUUID().toString());
         testUser.setName("Kenyon");
         testUser.setSurname("Hou");
 
-        doNothing().when(userService).addUser(testUser);
+        when(userService.addUser(any())).thenReturn(testUser);
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testUser)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(print());
         verify(userService, times(1)).addUser(testUser);
         verifyNoMoreInteractions(userService);

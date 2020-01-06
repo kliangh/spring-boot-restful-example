@@ -44,9 +44,9 @@ public class UserController {
     }
     //Add an user to userRepository
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void addUser(@RequestBody User newUser) {
-        userService.addUser(newUser);
+    @ResponseStatus(value = HttpStatus.OK)
+    public User addUser(@RequestBody User newUser) {
+        return userService.addUser(newUser);
     }
 
 
