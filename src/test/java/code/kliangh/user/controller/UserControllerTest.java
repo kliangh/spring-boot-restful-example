@@ -66,7 +66,7 @@ public class UserControllerTest {
                                 .param("page", "0")
                                 .param("size", "10"))
                .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(jsonPath("$", hasSize(2)))
                .andExpect(jsonPath("$[0].surname", is("Kenyon")))
                .andExpect(jsonPath("$[1].surname", is("Hou")))
@@ -86,11 +86,11 @@ public class UserControllerTest {
 
         when(userService.findUserByUid(uid)).thenReturn(testUser);
         mockMvc.perform(get("/users/{uid}", uid))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.name", is("Kenyon")))
-                .andExpect(jsonPath("$.surname", is("Hou")))
-                .andDo(print());
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+               .andExpect(jsonPath("$.name", is("Kenyon")))
+               .andExpect(jsonPath("$.surname", is("Hou")))
+               .andDo(print());
         verify(userService, times(1)).findUserByUid(uid);
         verifyNoMoreInteractions(userService);
     }
@@ -108,7 +108,7 @@ public class UserControllerTest {
         when(userService.findUser(Example.of(testUser))).thenReturn(expectedUser);
         mockMvc.perform(get("/users/example?name=Kenyon"))
                .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(jsonPath("$.name", is("Kenyon")))
                .andExpect(jsonPath("$.surname", is("Hou")))
                .andDo(print());
@@ -125,10 +125,14 @@ public class UserControllerTest {
 
         when(userService.addUser(any())).thenReturn(testUser);
         mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testUser)))
-                .andExpect(status().isOk())
-                .andDo(print());
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(testUser)))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+               .andExpect(jsonPath("$.uid").exists())
+               .andExpect(jsonPath("$.name", is ("Kenyon")))
+               .andExpect(jsonPath("$.surname", is("Hou")))
+               .andDo(print());
         verify(userService, times(1)).addUser(testUser);
         verifyNoMoreInteractions(userService);
     }
@@ -143,12 +147,12 @@ public class UserControllerTest {
 
         when(userService.updateUser(any())).thenReturn(updatedUser);
         mockMvc.perform(put("/users", uid)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedUser)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.name", is("Vargo")))
-                .andDo(print());
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updatedUser)))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+               .andExpect(jsonPath("$.name", is("Vargo")))
+               .andDo(print());
         verify(userService, times(1)).updateUser(updatedUser);
         verifyNoMoreInteractions(userService);
     }
@@ -163,8 +167,8 @@ public class UserControllerTest {
 
         doNothing().when(userService).deleteUserByUid(testUser.getUid());
         mockMvc.perform(delete("/users/{uid}", uid))
-                .andExpect(status().isOk())
-                .andDo(print());
+               .andExpect(status().isOk())
+               .andDo(print());
         verify(userService, times(1)).deleteUserByUid(uid);
         verifyNoMoreInteractions(userService);
     }
