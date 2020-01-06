@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class UserMutationTest {
@@ -63,7 +64,9 @@ public class UserMutationTest {
         User testUser = getTestUser();
         doNothing().when(userRepository).deleteById(testUser.getUid());
 
-        userMutation.deleteUser(testUser.getUid());
+        Boolean result = userMutation.deleteUser(testUser.getUid());
+
+        assertTrue(result);
 
         verify(userRepository, times(1)).deleteById(testUser.getUid());
         verify(userRepository, times(1)).flush();
