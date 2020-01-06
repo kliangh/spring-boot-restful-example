@@ -135,21 +135,19 @@ public class UserControllerTest {
 
     @Test
     public void updateUser() throws Exception {
-        User testUser = new User();
         String uid = UUID.randomUUID().toString();
-        testUser.setUid(uid);
-        testUser.setName("Kenyon");
-        testUser.setSurname("Hou");
-
         User updatedUser = new User();
         updatedUser.setUid(uid);
         updatedUser.setName("Vargo");
+        updatedUser.setSurname("Hou");
 
-        when(userService.findUserByUid(uid)).thenReturn(testUser);
-        mockMvc.perform(put("/users/{uid}", uid)
+        when(userService.updateUser(any())).thenReturn(updatedUser);
+        mockMvc.perform(put("/users", uid)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedUser)))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.name", is("Vargo")))
                 .andDo(print());
         verify(userService, times(1)).updateUser(updatedUser);
         verifyNoMoreInteractions(userService);

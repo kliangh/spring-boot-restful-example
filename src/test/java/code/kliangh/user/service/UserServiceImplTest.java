@@ -120,8 +120,8 @@ public class UserServiceImplTest {
         updatedUser.setUid(uid);
         updatedUser.setName("Vargo");
 
-        when(userRepository.save(originalUser)).thenReturn(originalUser);
         when(userRepository.findById(uid)).thenReturn(Optional.of(originalUser));
+        when(userRepository.save(originalUser)).thenReturn(originalUser);
 
         userServiceImpl.updateUser(updatedUser);
 

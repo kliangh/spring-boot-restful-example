@@ -62,14 +62,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @CachePut(value = CACHE_KEY, key = "#updatedUser.uid")
-    public void updateUser(User updatedUser) throws Exception {
+    public User updateUser(User updatedUser) throws Exception {
         //Get original user entity
         User originalUser = findUserByUid(updatedUser.getUid());
 
         //Copy properties with value from updated user to original user
         BeanUtils.copyPropertiesWithValue(updatedUser, originalUser);
 
-        userRepository.saveAndFlush(originalUser);
+        return userRepository.saveAndFlush(originalUser);
     }
 
     @Override

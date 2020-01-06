@@ -51,11 +51,10 @@ public class UserController {
 
 
     //Update specific field of an user, name or surname
-    @PutMapping("/{uid}")
+    @PutMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateUser(@RequestBody User user) throws Exception {
-
-        userService.updateUser(user);
+    public User updateUser(@RequestBody User user) throws Exception {
+        return userService.updateUser(user);
     }
 
     //Delete an user by UID
