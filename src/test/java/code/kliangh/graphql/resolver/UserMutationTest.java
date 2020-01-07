@@ -2,6 +2,7 @@ package code.kliangh.graphql.resolver;
 
 import code.kliangh.user.entity.User;
 import code.kliangh.user.repository.UserRepository;
+import code.kliangh.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class UserMutationTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private UserMutation userMutation;
@@ -32,46 +33,38 @@ public class UserMutationTest {
     @Test
     public void addUser() {
         User testUser = getTestUser();
-        when(userRepository.save(any())).thenReturn(testUser);
+        when(userService.addUser(any())).thenReturn(testUser);
         User resultUser = userMutation.addUser(testUser.getName(), testUser.getSurname(),
                                                testUser.getRemark());
 
         assertEquals(resultUser, testUser);
 
-        verify(userRepository, times(1)).save(any());
-        verifyNoMoreInteractions(userRepository);
+        verify(userService, times(1)).addUser(any());
+        verifyNoMoreInteractions(userService);
     }
 
     @Test
-    public void updateUser() throws InvocationTargetException, IllegalAccessException {
-        User testUser = getTestUser();
+    public void updateUser() throws Exception {
+        User updatedUser = getTestUser();
+        updatedUser.setRemark("Ha ha!");
 
-        when(userRepository.findById(testUser.getUid())).thenReturn(Optional.of(testUser));
-        when(userRepository.saveAndFlush(testUser)).thenReturn(testUser);
+        when(userService.updateUser(any())).thenReturn(updatedUser);
+        userMutation.updateUser(updatedUser.getUid(), updatedUser.getName(),
+                                updatedUser.getSurname(), "Ha ha!");
 
-        User result = userMutation.updateUser(testUser.getUid(), testUser.getName(),
-                                              testUser.getSurname(), "Ha ha!");
-        assertEquals(testUser, result);
-        assertEquals("Ha ha!", testUser.getRemark());
-
-        verify(userRepository, times(1)).findById(testUser.getUid());
-        verify(userRepository, times(1)).saveAndFlush(testUser);
-        verifyNoMoreInteractions(userRepository);
+        verify(userService, times(1)).updateUser(any());
+        verifyNoMoreInteractions(userService);
     }
 
     @Test
     public void deleteUser() {
         User testUser = getTestUser();
-        doNothing().when(userRepository).deleteById(testUser.getUid());
+        doNothing().when(userService).deleteUserByUid(testUser.getUid());
 
-        Boolean result = userMutation.deleteUser(testUser.getUid());
+        userMutation.deleteUser(testUser.getUid());
 
-        assertTrue(result);
-
-        verify(userRepository, times(1)).deleteById(testUser.getUid());
-        verify(userRepository, times(1)).flush();
-        verify(userRepository, times(1)).existsById(testUser.getUid());
-        verifyNoMoreInteractions(userRepository);
+        verify(userService, times(1)).deleteUserByUid(testUser.getUid());
+        verifyNoMoreInteractions(userService);
     }
 
     private User getTestUser() {
