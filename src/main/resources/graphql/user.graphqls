@@ -6,7 +6,7 @@ type User {
 }
 
 type Query {
-    findAllUsers: [User]!
+    findAllUsers(page: Int!, size: Int!): [User]
     user(id: ID!) : User
 }
 
