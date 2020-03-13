@@ -1,7 +1,11 @@
-group 'code.kliangh'
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'jacoco'
+}
 
-apply plugin: "java"
-apply plugin: "jacoco"
+group 'code.kliangh'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -17,6 +21,7 @@ ext {
 
 dependencies {
 	compileOnly "org.projectlombok:lombok:1.16.12"
+    annotationProcessor 'org.projectlombok:lombok:1.16.12'
 
 	compile "org.springframework.boot:spring-boot-starter-data-jpa:$rootProject.ext.springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-data-redis:$rootProject.ext.springBootVersion"
