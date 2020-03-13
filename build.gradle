@@ -55,13 +55,15 @@ jacocoTestReport {
 	}
 
 	afterEvaluate {
-		classDirectories = files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-					'**/*Application**',
-                    '**/*SystemInfo**',
-					'**/*Config**'
-			])
-		})
+        getClassDirectories().setFrom(
+                classDirectories.files.collect{
+                    fileTree(dir: it, excludes: [
+                            '**/*Application**',
+                            '**/*SystemInfo**',
+                            '**/*Config**'
+                    ])
+                }
+        )
 	}
 }
 test.finalizedBy(project.tasks.jacocoTestReport)
